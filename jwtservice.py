@@ -12,6 +12,7 @@ oauth_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 # Проверка токена
 def verify_token(token: str):
     try:
