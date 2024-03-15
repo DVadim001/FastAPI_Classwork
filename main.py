@@ -1,40 +1,24 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from jwtservice import get_current_user
 
 app = FastAPI(docs_url='/')
 
 
-@app.get("/")
+@app.get('/home')
 async def home():
-    return {"Hello": "World"}
+    return "This is home page"
 
 
-@app.get('/users', tags=['This method for users'], description='This method for get all users')
-async def users():
-    return {'User': 'John'}
+@app.post('/register')
+async def register():
+    return 'Register page'
 
 
-@app.get('/продукты', tags=['This method for products'])
-async def users():
-    return {'products': 'test'}
+@app.post('/login')
+async def login():
+    return 'Login page'
 
 
-@app.post('/products', tags=['This method for products'])
-async def users(title: str, price: int, description: str):
-    return {'products': f'Название: {title} Цена: ${price}, Описание: {description}'}
-
-
-# Параметры для запроса
-@app.get('/param-example')
-async def param(user_id: int, user_answer: str):
-    return {'message': f'У этого пользователя {user_id} ID, 10 ответов и этот ответ: {user_answer}'}
-
-
-@app.put('/products', tags=['This method for products'])
-async def product_change(title: str, price: int, description: str):
-    return {'Update info': f'Новые данные: {title}, новая цена: {price}, новое описание: {description}'}
-
-
-@app.delete('/products', tags=['This method for products'])
-async def delete(title: str):
-    return {'Ответ': f'Этот продукт: {title} удалён из базы!'}
-
+@app.get("/secure-data")
+async def secure_data(current_user: dict = Depends(get_current_user)):
+    return {"message": "This data is secure", "user": current_user}
